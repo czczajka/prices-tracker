@@ -1,0 +1,7 @@
+fastapi
+pandas
+plotly
+pydantic
+uvicorn
+aiofiles
+jinja2
