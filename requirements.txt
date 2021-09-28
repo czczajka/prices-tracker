@@ -5,3 +5,5 @@ pydantic
 uvicorn
 aiofiles
 jinja2
+dash
+plotly

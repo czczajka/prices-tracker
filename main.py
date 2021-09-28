@@ -1,24 +1,55 @@
 import random
+import csvcreator as _csv
+import services as _services
+from schemas import csvCreate
+import pandas as pd
 
 from fastapi import FastAPI, Request, HTTPException
-import csvcreator as _csv
-from schemas import csvCreate
+from fastapi.middleware.wsgi import WSGIMiddleware
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
-import plot
-import services as _services
+
+import dash
+from dash import dcc
+from dash import html
+import plotly.express as px
+
+import uvicorn as uvicorn
 
 app = FastAPI()
+app_dash = dash.Dash(__name__,  requests_pathname_prefix='/dash/')
 
+app.mount("/dash", WSGIMiddleware(app_dash.server))
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
+########################################################
+df = pd.DataFrame({
+    "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
+    "Amount": [4, 1, 2, 2, 4, 5],
+    "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
+})
+
+fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
+
+app_dash.layout = html.Div(children=[
+    html.H1(children='Hello Dash'),
+
+    html.Div(children='''
+        Dash: A web application framework for your data.
+    '''),
+
+    dcc.Graph(
+        id='example-graph',
+        figure=fig
+    )
+])
+####################################################
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-
     product_names = _services.find_product_names()
     random.shuffle(product_names)
     num = len(product_names)
@@ -37,13 +68,5 @@ async def product(request: Request, element: str):
     return templates.TemplateResponse('template.html', {'request': request, 'data': data, 'products': product_names})
 
 
-@app.post("/csvCreate")
-def create_csv(file_data: csvCreate):
-    _csv.create_file(file_data)
-    return {"detail": "its working :)"}
-
-
-@app.get("/gcreate")
-def graph_create():
-    plot.generate_site()
-    return {"detail": "git"}
+if __name__ == "__main__":
+    uvicorn.run(app)
