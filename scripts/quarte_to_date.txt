@@ -1,0 +1,9 @@
+df = pd.read_csv('csv-db/przecietne_msc_wynagro_kwartalne.csv', sep=';', encoding = 'unicode_escape')
+df['Year'] = df['Rok'].astype(str)
+df['Quarter'] = df['Kwarta³'].astype(str)
+df['sign'] = '-'
+df['Date'] = df['Year'] + df['sign'] + df['Quarter']
+df['date'] = pd.to_datetime(df['Date'], errors='coerce')
+df['Value'] = df['Wartoæ']
+data_new = df[['date', 'Value']].copy()
+data_new.to_csv('data_salary.csv')

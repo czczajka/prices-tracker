@@ -1,7 +1,5 @@
 import random
-import csvcreator as _csv
 import services as _services
-from schemas import csvCreate
 import pandas as pd
 
 from fastapi import FastAPI, Request, HTTPException
@@ -13,7 +11,9 @@ from fastapi.responses import HTMLResponse
 import dash
 from dash import dcc
 from dash import html
-import plotly.express as px
+
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
 
 import uvicorn as uvicorn
 
@@ -25,14 +25,19 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
-########################################################
-df = pd.DataFrame({
-    "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-    "Amount": [4, 1, 2, 2, 4, 5],
-    "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-})
+df = pd.read_csv('csv-db/hause_prices.csv')
 
-fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
+fig = make_subplots(rows=2, cols=1)
+fig.add_trace(
+    go.Scatter(x=df['Date'], y=df['Price']),
+    row=1, col=1
+)
+
+df = pd.read_csv('csv-db/data_salary.csv')
+fig.add_trace(
+    go.Scatter(x=df['date'], y=df['Value']),
+    row=2, col=1
+)
 
 app_dash.layout = html.Div(children=[
     html.H1(children='Hello Dash'),
