@@ -32,19 +32,21 @@
   
   <body>
 
-    <div id="stars"></div>
+    <!-- <div id="stars"></div>
     <div id="stars2"></div>
-    <div id="stars3"></div>
+    <div id="stars3"></div> -->
     
     <nav class="navbar d-flex justify-content-center flex-nowrap">
             <img src="{{ url_for('static', path='/animation_img/ufo-flying-left.png') }}"> 
-            <h1 class="text-center">PRICES FROM SPACE</h1>
+            <h1 class="text-center"><a href="/" style="text-decoration: none; color: #fff">PRICES FROM SPACE</a></h1>
             <img src="{{ url_for('static', path='/animation_img/ufo-flying-right.png') }}"> 
     </nav>
 
 
-    <div class="container-sm text-center content">
-        <h1 class="display-5 p-3 mt-3">Choose a product and check its price over the years... </h1>   
+    <div class="container-sm text-center p-3 mt-3">
+      <div class="card text-white col-lg-10 mx-auto" style="background-color: transparent;">
+              <h1>Choose a product and check its price over the years... </h1>
+      </div>
     </div>
 
     <div class="scene-1 my-3">
@@ -59,46 +61,19 @@
       </div>
     </div>
 
-    <div class="container-sm text-center content">
-      <h1 class="display-5 p-3 mt-3">Randomly selcted product for you </h1>   
-    </div>
-
-    <div class="container-sm text-center card-content p-3 mt-3">
-      <div class="card text-white bg-secondary col-lg-10 mx-auto">
-          <div class="card-header">
-              <h1>PRODUCT</h1>
-          </div>
-          <div class="text-center">
-              <a href="/product1" class="btn btn-dark mb-2 btn-lg col-lg-8 col-sm-6 text-light">GO TO PRODUCT</a>
-          </div>
-      </div>
-  </div>
-
-    <div class="scene-3 my-3">
-      <div class="planet">
-        <img src="{{ url_for('static', path='/animation_img/planet.png') }}">
-      </div>
-    </div>
-
-    <div class="container-sm text-center content mt-3">
-      <h1 class="display-5 p-3">Other available products </h1>   
-    </div>
-
     {% for n in range(num) %}
 
-            <div class="container-sm text-center card-content p-3 mt-3">
+            <div class="container-sm text-center p-3 mt-3">
                 <div class="card text-white bg-secondary col-lg-10 mx-auto">
                     <div class="card-header">
                         <h1>{{ products.pop() }}</h1>
                     </div>
                     <div class="text-center">
-                        <a href="/product1" class="btn btn-dark mb-2 btn-lg col-lg-8 col-sm-6 text-light mt-1">GO TO PRODUCT</a>
+                        <a href="/product1" class="btn btn-dark mb-2 btn-lg col-lg-3 col-sm-6 text-light mt-1">GO TO PRODUCT</a>
                     </div>
                 </div>
             </div>
 
-            
-    
     {% endfor %}
 
     <footer class="d-flex justify-content-center flex-nowrap mt-3 text-light"> 

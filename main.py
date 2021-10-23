@@ -73,10 +73,11 @@ async def product(request: Request, element: str):
     random.shuffle(product_names)
     data = _services.set_data(element)
 
-    #funkcja ktora bedzie uruchamiala serwer dash z argumentami v
+    #funkcja ktora bedzie uruchamiala serwer dash z argumentami
     new_func(element)
     ####
-    return templates.TemplateResponse('template.html', {'request': request, 'data': data, 'products': product_names})
+    
+    return templates.TemplateResponse('template.html', {'request': request, 'product': element})
 
 
 if __name__ == "__main__":
