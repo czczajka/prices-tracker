@@ -25,32 +25,34 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
-df = pd.read_csv('csv-db/hause_prices.csv')
+def new_func(product_name: str):
+    print(product_name)
+    df = pd.read_csv('csv-db/hause_prices.csv')
 
-fig = make_subplots(rows=2, cols=1)
-fig.add_trace(
+    fig = make_subplots(rows=2, cols=1)
+    fig.add_trace(
     go.Scatter(x=df['Date'], y=df['Price']),
     row=1, col=1
 )
 
-df = pd.read_csv('csv-db/data_salary.csv')
-fig.add_trace(
+    df = pd.read_csv('csv-db/data_salary.csv')
+    fig.add_trace(
     go.Scatter(x=df['date'], y=df['Value']),
     row=2, col=1
 )
 
-app_dash.layout = html.Div(children=[
+    app_dash.layout = html.Div(children=[
     html.H1(children='Hello Dash'),
-
     html.Div(children='''
         Dash: A web application framework for your data.
     '''),
-
     dcc.Graph(
         id='example-graph',
         figure=fig
     )
 ])
+
+
 ####################################################
 
 @app.get("/", response_class=HTMLResponse)
@@ -70,6 +72,10 @@ async def product(request: Request, element: str):
     product_names = _services.find_product_names()
     random.shuffle(product_names)
     data = _services.set_data(element)
+
+    #funkcja ktora bedzie uruchamiala serwer dash z argumentami v
+    new_func(element)
+    ####
     return templates.TemplateResponse('template.html', {'request': request, 'data': data, 'products': product_names})
 
 
