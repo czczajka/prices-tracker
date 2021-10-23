@@ -66,10 +66,10 @@
             <div class="container-sm text-center p-3 mt-3">
                 <div class="card text-white bg-secondary col-lg-10 mx-auto">
                     <div class="card-header">
-                        <h1>{{ products.pop() }}</h1>
+                        <h1>{{ products[n] }}</h1>
                     </div>
                     <div class="text-center">
-                        <a href="/product1" class="btn btn-dark mb-2 btn-lg col-lg-3 col-sm-6 text-light mt-1">GO TO PRODUCT</a>
+                        <a href={{ products[n] }} class="btn btn-dark mb-2 btn-lg col-lg-3 col-sm-6 text-light mt-1">GO TO ITEM</a>
                     </div>
                 </div>
             </div>

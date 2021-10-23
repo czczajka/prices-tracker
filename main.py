@@ -25,7 +25,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
-def new_func(product_name: str):
+# TODO Draw  for concrete data not always for hause_prices
+def draw_graph(product_name: str):
     print(product_name)
     df = pd.read_csv('csv-db/hause_prices.csv')
 
@@ -57,27 +58,19 @@ def new_func(product_name: str):
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    product_names = _services.find_product_names()
-    random.shuffle(product_names)
+    product_names = _services.find_items_names()
     num = len(product_names)
     return templates.TemplateResponse('index.html', {'request': request, 'products': product_names, 'num': num})
 
 
-@app.get("/{element}", response_class=HTMLResponse)
-async def product(request: Request, element: str):
-
-    if not _services.find_product_by_name(element):
+@app.get("/{item}", response_class=HTMLResponse)
+async def product(request: Request, item: str):
+# TODO Better way to data validation allign with FastAPI framework
+    if False == _services.check_item_exist(item):
         raise HTTPException(status_code=404, detail="Item not found")
 
-    product_names = _services.find_product_names()
-    random.shuffle(product_names)
-    data = _services.set_data(element)
-
-    #funkcja ktora bedzie uruchamiala serwer dash z argumentami
-    new_func(element)
-    ####
-    
-    return templates.TemplateResponse('template.html', {'request': request, 'product': element})
+    draw_graph(item)
+    return templates.TemplateResponse('template.html', {'request': request, 'product': item})
 
 
 if __name__ == "__main__":

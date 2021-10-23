@@ -3,12 +3,13 @@ from schemas import product
 import pandas as pd
 
 
-def find_product_names():
-    product_names = []
-    files = os.listdir('static/graphs')
+def find_items_names():
+    names = []
+    files = os.listdir('csv-db/')
     for file in files:
-        product_names.append(file.replace('.html', ''))
-    return product_names
+        names.append(file.replace('.csv', ''))
+    names = sorted(names)
+    return names
 
 
 def set_data(product_name: str):
@@ -29,12 +30,12 @@ def set_data(product_name: str):
     return product_data
 
 
-def find_product_by_name(name: str):
-    products = find_product_names()
-    for element in products:
-        if element == name:
-            return name
-    return None
+def check_item_exist(name: str):
+    items = find_items_names()
+    for item in items:
+        if item == name:
+            return True
+    return False
 
 
 def get_change(oldest, newest):
