@@ -28,19 +28,14 @@ templates = Jinja2Templates(directory="templates")
 # TODO Draw  for concrete data not always for hause_prices
 def draw_graph(product_name: str):
     print(product_name)
-    df = pd.read_csv('csv-db/hause_prices.csv')
+    data_path = "data/" + product_name
+    df = pd.read_csv(data_path)
 
-    fig = make_subplots(rows=2, cols=1)
+    fig = make_subplots(rows=1, cols=1)
     fig.add_trace(
     go.Scatter(x=df['Date'], y=df['Price']),
     row=1, col=1
-)
-
-    df = pd.read_csv('csv-db/data_salary.csv')
-    fig.add_trace(
-    go.Scatter(x=df['date'], y=df['Value']),
-    row=2, col=1
-)
+    )
 
     app_dash.layout = html.Div(children=[
     html.H1(children='Hello Dash'),

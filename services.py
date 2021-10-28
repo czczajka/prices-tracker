@@ -5,7 +5,7 @@ import pandas as pd
 
 def find_items_names():
     names = []
-    files = os.listdir('csv-db/')
+    files = os.listdir('data/')
     for file in files:
         names.append(file.replace('.csv', ''))
     names = sorted(names)

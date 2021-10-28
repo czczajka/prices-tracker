@@ -1,0 +1,1 @@
+0 0 * * * echo -n `date +"\%Y-\%m-\%d,"` >> /home/czarek/repos/the_fucking_prices/data/big_mac_data.txt 2>&1; python /home/czarek/repos/the_fucking_prices/scripts/big_mac_parser.py >> /home/czarek/repos/the_fucking_prices/data/big_mac_data.txt 2>&1

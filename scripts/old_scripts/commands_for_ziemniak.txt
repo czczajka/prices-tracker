@@ -1,0 +1,5 @@
+df = pd.read_csv('csv-db/raw_data/ziemniak.csv')
+new = df.loc[df['Powiat'] == 'Inowrocław']
+new = new.rename(columns={'Data' : 'Date', 'Cena brutto' : 'Price'})
+new.to_csv('csv-db/ziemniak.csv', index=False, sep=',')
+
