@@ -1,4 +1,3 @@
-import random
 import services as _services
 import pandas as pd
 
@@ -25,15 +24,14 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
-# TODO Draw  for concrete data not always for hause_prices
 def draw_graph(product_name: str):
     print(product_name)
-    data_path = "data/" + product_name
-    df = pd.read_csv(data_path)
-
+    filepath = "data/" + product_name + "_data.txt"
+    df = pd.read_csv(filepath)
+    df.columns = ['Date', 'Price']
     fig = make_subplots(rows=1, cols=1)
     fig.add_trace(
-    go.Scatter(x=df['Date'], y=df['Price']),
+    go.Scatter(x=df.iloc[:, 0], y=df.iloc[:, 1]),
     row=1, col=1
     )
 
@@ -53,14 +51,15 @@ def draw_graph(product_name: str):
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    product_names = _services.find_items_names()
-    num = len(product_names)
-    return templates.TemplateResponse('index.html', {'request': request, 'products': product_names, 'num': num})
+    products = _services.find_items()
+    num = len(products)
+
+    return templates.TemplateResponse('index.html', {'request': request, 'products': products, 'num': num})
 
 
 @app.get("/{item}", response_class=HTMLResponse)
 async def product(request: Request, item: str):
-# TODO Better way to data validation allign with FastAPI framework
+    print(item)
     if False == _services.check_item_exist(item):
         raise HTTPException(status_code=404, detail="Item not found")
 
