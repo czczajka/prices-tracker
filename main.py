@@ -54,7 +54,7 @@ async def home(request: Request):
     products = _services.find_items()
     num = len(products)
 
-    return templates.TemplateResponse('index.html', {'request': request, 'products': products, 'num': num})
+    return templates.TemplateResponse('main.html', {'request': request, 'products': products, 'num': num})
 
 
 @app.get("/{item}", response_class=HTMLResponse)
@@ -64,7 +64,7 @@ async def product(request: Request, item: str):
         raise HTTPException(status_code=404, detail="Item not found")
 
     draw_graph(item)
-    return templates.TemplateResponse('template.html', {'request': request, 'product': item})
+    return templates.TemplateResponse('main.html', {'request': request, 'product': item})
 
 
 if __name__ == "__main__":
