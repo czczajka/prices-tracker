@@ -18,3 +18,10 @@ def check_item_exist(name: str):
         if item.get_uri() == name:
             return True
     return False
+    
+
+def get_names(items: item.Item):
+    names = []
+    for idx in range(len(items)):
+        names.append(items[idx].get_name())
+    return names

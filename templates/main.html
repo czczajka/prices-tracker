@@ -26,10 +26,13 @@
             <h2>A place where you can monitor popular product price changes over the years</h2>
           </div>
 
+          
+          {% for name in names %}
+
           <div class="container center-section p-3 rounded">
 
               <div class="container text-center rounded mt-2" id="data">
-                <h3>Nazwa produktu</h3>
+                <h3>{{ name }}</h3>
                 <table class="table text-light">
 
                   <thead>
@@ -52,29 +55,7 @@
                 <iframe class="rounded" src="http://127.0.0.1:8000/dash/" width="100%" height="100%"></iframe> 
               </div> 
               
-              <div class="container text-center rounded mt-2" id="data">
-                <h3>Nazwa produktu</h3>
-                <table class="table text-light">
-
-                  <thead>
-                    <tr id="table-header">
-                      <th scope="col">WSKAŹNIK PIERWSZY</th>
-                      <th scope="col">INNY WSKAŹNIK</th>
-                      <th scope="col">JESZCZE INNY</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <tr id="table-data">
-                      <td>dane</td>
-                      <td>dane</td>
-                      <td>dane</td>
-                    </tr>
-                  </tbody>
-
-                </table>
-                <iframe class="rounded" src="http://127.0.0.1:8000/dash/" width="100%" height="100%"></iframe> 
-              </div> 
+              {% endfor %} 
 
           </div>
 

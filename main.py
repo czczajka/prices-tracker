@@ -53,8 +53,10 @@ def draw_graph(product_name: str):
 async def home(request: Request):
     products = _services.find_items()
     num = len(products)
-
-    return templates.TemplateResponse('main.html', {'request': request, 'products': products, 'num': num})
+    names = _services.get_names(products)
+    for n in names:
+        print(n)
+    return templates.TemplateResponse('main.html', {'request': request, 'names': names, 'num': num})
 
 
 @app.get("/{item}", response_class=HTMLResponse)
