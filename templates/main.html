@@ -27,12 +27,12 @@
           </div>
 
           
-          {% for name in names %}
+          {% for item in products %}
 
           <div class="container center-section p-3 rounded">
 
               <div class="container text-center rounded mt-2" id="data">
-                <h3>{{ name }}</h3>
+                <h3>{{ item.get_name() }}</h3>
                 <table class="table text-light">
 
                   <thead>
@@ -52,7 +52,7 @@
                   </tbody>
 
                 </table>
-                <iframe class="rounded" src="http://127.0.0.1:8000/dash/" width="100%" height="100%"></iframe> 
+                <iframe class="rounded" src="{{ url_for('static', path=item.get_plot_path()) }}" width="100%" height="100%"></iframe>
               </div> 
               
               {% endfor %} 

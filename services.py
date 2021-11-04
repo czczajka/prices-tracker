@@ -7,7 +7,6 @@ def find_items():
     files = os.listdir('data/')
     for filename in files:
         items.append(item.Item(filename))
-    print(items[0].get_path())
 # TODO Add sorting of elements
     return items
 

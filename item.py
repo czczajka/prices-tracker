@@ -15,3 +15,7 @@ class Item:
         uri = self.path.replace(".txt", "")
         uri = uri.replace("_data", "")
         return uri
+
+    def get_plot_path(self):
+        plot_path = 'plots/' + self.get_uri() + '.html'
+        return plot_path

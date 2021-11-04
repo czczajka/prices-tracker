@@ -2,71 +2,45 @@ import services as _services
 import pandas as pd
 
 from fastapi import FastAPI, Request, HTTPException
-from fastapi.middleware.wsgi import WSGIMiddleware
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 
-import dash
-from dash import dcc
-from dash import html
 
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
+import plotly.express as px
 
-import uvicorn as uvicorn
+import uvicorn
 
 app = FastAPI()
-app_dash = dash.Dash(__name__,  requests_pathname_prefix='/dash/')
 
-app.mount("/dash", WSGIMiddleware(app_dash.server))
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
-def draw_graph(product_name: str):
-    print(product_name)
-    filepath = "data/" + product_name + "_data.txt"
-    df = pd.read_csv(filepath)
-    df.columns = ['Date', 'Price']
-    fig = make_subplots(rows=1, cols=1)
-    fig.add_trace(
-    go.Scatter(x=df.iloc[:, 0], y=df.iloc[:, 1]),
-    row=1, col=1
-    )
 
-    app_dash.layout = html.Div(children=[
-    html.H1(children='Hello Dash'),
-    html.Div(children='''
-        Dash: A web application framework for your data.
-    '''),
-    dcc.Graph(
-        id='example-graph',
-        figure=fig
-    )
-])
+def generate_plots():
+    products = _services.find_items()
+    for item in products:
+        df = pd.read_csv('data/' + item.get_path())
+        plot = px.line(data_frame=df, x=df.iloc[:, 0], y=df.iloc[:, 1])
+        plot.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0)
+        )
+        plot.write_html('static/plots/' + item.get_uri() + '.html',
+                        full_html=False,
+                        include_plotlyjs='cdn')
 
 
-####################################################
+@app.get("/g_plots")
+def graph_create():
+    generate_plots()
+    return {"status": "success"}
+
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     products = _services.find_items()
-    num = len(products)
-    names = _services.get_names(products)
-    for n in names:
-        print(n)
-    return templates.TemplateResponse('main.html', {'request': request, 'names': names, 'num': num})
-
-
-@app.get("/{item}", response_class=HTMLResponse)
-async def product(request: Request, item: str):
-    print(item)
-    if False == _services.check_item_exist(item):
-        raise HTTPException(status_code=404, detail="Item not found")
-
-    draw_graph(item)
-    return templates.TemplateResponse('main.html', {'request': request, 'product': item})
+    return templates.TemplateResponse('main.html', {'request': request, 'products': products})
 
 
 if __name__ == "__main__":
