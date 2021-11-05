@@ -7,7 +7,7 @@ def find_items():
     files = os.listdir('data/')
     for filename in files:
         items.append(item.Item(filename))
-# TODO Add sorting of elements
+    items.sort(key=lambda x: x.get_uri())
     return items
 
 
