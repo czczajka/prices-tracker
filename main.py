@@ -11,6 +11,8 @@ import plotly.express as px
 
 import uvicorn
 
+import os
+
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -26,7 +28,11 @@ def generate_plots():
         plot.update_layout(
             margin=dict(l=0, r=0, t=0, b=0)
         )
-        plot.write_html('static/plots/' + item.get_uri() + '.html',
+        file_path = 'static/plots/' + item.get_uri() + '.html'
+        print(file_path)
+        print("current path")
+        print(os.getcwd())
+        plot.write_html(file_path,
                         full_html=False,
                         include_plotlyjs='cdn')
 
