@@ -29,9 +29,6 @@ def generate_plots():
             margin=dict(l=0, r=0, t=0, b=0)
         )
         file_path = 'static/plots/' + item.get_uri() + '.html'
-        print(file_path)
-        print("current path")
-        print(os.getcwd())
         plot.write_html(file_path,
                         full_html=False,
                         include_plotlyjs='cdn')
