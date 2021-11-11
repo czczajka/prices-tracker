@@ -4,7 +4,8 @@ from sqlalchemy.orm import sessionmaker
 
 import os
 
-SQLALCHEMY_DATABASE_URL = os.environ['DATABASE_URL']
+# Hack for Heroku only
+SQLALCHEMY_DATABASE_URL = os.environ['DATABASE_URL'].replace("://", "ql://", 1)
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL
