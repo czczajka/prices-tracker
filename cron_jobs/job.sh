@@ -2,7 +2,7 @@
 
 name_var=big_mac
 date_var=$(echo -n `date +"%Y-%m-%d"`)
-price_var=$(python ../scripts/big_mac_parser.py)
+price_var=$(python scripts/big_mac_parser.py)
 echo $price_var
 
 curl -X 'POST' \
@@ -17,11 +17,11 @@ curl -X 'POST' \
 
 name_var=cheesburger
 date_var=$(echo -n `date +"%Y-%m-%d"`)
-price_var=$(python ../scripts/cheesburger_parser.py)
+price_var=$(python scripts/cheesburger_parser.py)
 echo $price_var
 
 curl -X 'POST' \
-  'http://https://price-trend.herokuapp.com/add_entry/' \
+  'https://price-trend.herokuapp.com/add_entry/' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
