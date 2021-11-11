@@ -11,4 +11,3 @@ requests
 bs4
 sqlalchemy
 psycopg2
-os
