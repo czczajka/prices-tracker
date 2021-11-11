@@ -30,3 +30,4 @@ curl -X 'POST' \
     "price": "'$price_var'"
   }'
 
+curl https://price-trend.herokuapp.com/g_plots/
