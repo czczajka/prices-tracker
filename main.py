@@ -38,11 +38,9 @@ def generate_plots():
 # TODO Try to use ORM instead of raw sql
 #    df = pd.read_sql(Session.query(models.ItemEntry), Session.query(models.ItemEntry).session.bind)
     df = pd.read_sql('SELECT * FROM item_entries', engine, index_col='id')
-    print(df.head())
     products = _services.find_items()
     for item in products:
         temp_df = df.loc[df['item_name'] == item.get_uri()]
-        print(temp_df.head())
         plot = px.line(data_frame=temp_df, x=temp_df['date'], y=temp_df['price'])
         plot.update_layout(
             margin=dict(l=0, r=0, t=0, b=0)
