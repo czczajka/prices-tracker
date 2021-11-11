@@ -6,7 +6,7 @@ price_var=$(python ../scripts/big_mac_parser.py)
 echo $price_var
 
 curl -X 'POST' \
-  'http://127.0.0.1:8000/add_entry/' \
+  'https://price-trend.herokuapp.com/add_entry/' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -21,7 +21,7 @@ price_var=$(python ../scripts/cheesburger_parser.py)
 echo $price_var
 
 curl -X 'POST' \
-  'http://127.0.0.1:8000/add_entry/' \
+  'http://https://price-trend.herokuapp.com/add_entry/' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
