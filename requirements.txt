@@ -11,3 +11,4 @@ requests
 bs4
 sqlalchemy
 psycopg2
+boto3

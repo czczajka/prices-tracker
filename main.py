@@ -1,3 +1,5 @@
+import os
+
 import services as _services
 import pandas as pd
 
@@ -16,6 +18,9 @@ from sqlalchemy.orm import Session
 
 from sql_app import crud, models, schemas
 from sql_app.database import SessionLocal, engine
+
+import boto3
+from botocore.exceptions import ClientError
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -54,6 +59,9 @@ def generate_plots():
 @app.get("/g_plots")
 def graph_create():
     generate_plots()
+    s3_client = boto3.client('s3')
+    for filename in os.listdir("static/plots/"):
+        response = s3_client.upload_file("static/plots/" + filename, "pricestrackerstaticplots", filename)
     return {"status": "success"}
 
 
