@@ -22,6 +22,8 @@ from sql_app.database import SessionLocal, engine
 import boto3
 from botocore.exceptions import ClientError
 
+bucket_name="pricestrackerstaticplots"
+
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -61,13 +63,21 @@ def graph_create():
     generate_plots()
     s3_client = boto3.client('s3')
     for filename in os.listdir("static/plots/"):
-        response = s3_client.upload_file("static/plots/" + filename, "pricestrackerstaticplots", filename)
+        s3_client.upload_file("static/plots/" + filename, bucket_name, filename)
     return {"status": "success"}
 
+
+# TODO Static files are each time downloaded, caching mechanism maybe
+def download_plots_files():
+    s3 = boto3.client('s3')
+    for key in s3.list_objects(Bucket=bucket_name)['Contents']:
+        filename = key['Key']
+        s3.download_file(bucket_name, filename, "static/plots/" + filename)
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     products = _services.find_items()
+    download_plots_files()
     return templates.TemplateResponse('main.html', {'request': request, 'products': products})
 
 
