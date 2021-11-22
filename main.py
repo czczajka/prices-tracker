@@ -49,10 +49,12 @@ def generate_plots():
     for item in products:
         temp_df = df.loc[df['item_name'] == item.get_uri()]
         plot = px.line(data_frame=temp_df, x=temp_df['date'], y=temp_df['price'],
-                       template='plotly_dark')
+                       template='plotly_dark', )
         plot.update_layout(
-            margin=dict(l=0, r=0, t=0, b=0)
+            margin=dict(l=0, r=0, t=0, b=0, pad=20)
         )
+        plot.update_xaxes()
+        plot.update_yaxes(showgrid=False)
         file_path = 'static/plots/' + item.get_uri() + '.html'
         plot.write_html(file_path,
                         full_html=False,
