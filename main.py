@@ -48,7 +48,8 @@ def generate_plots():
     products = _services.find_items()
     for item in products:
         temp_df = df.loc[df['item_name'] == item.get_uri()]
-        plot = px.line(data_frame=temp_df, x=temp_df['date'], y=temp_df['price'])
+        plot = px.line(data_frame=temp_df, x=temp_df['date'], y=temp_df['price'],
+                       template='plotly_dark')
         plot.update_layout(
             margin=dict(l=0, r=0, t=0, b=0)
         )
@@ -73,6 +74,7 @@ def download_plots_files():
     for key in s3.list_objects(Bucket=bucket_name)['Contents']:
         filename = key['Key']
         s3.download_file(bucket_name, filename, "static/plots/" + filename)
+
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
